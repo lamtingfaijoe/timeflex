@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import MenuItem from '@material-ui/core/MenuItem';
 
 export default class Dropdown extends Component {
@@ -8,7 +9,7 @@ export default class Dropdown extends Component {
         super(props);
         this.state = {
             anchorEl: null,
-            view: "week",
+            currentViewName: props.currentViewName,
         };
 
         this.handleClick = this.handleClick.bind(this);
@@ -21,15 +22,26 @@ export default class Dropdown extends Component {
         });
     };
 
-    handleClose = (event) => {
+    handleClose = (event, props) => {
         this.setState({
             anchorEl: null,
-            view: event.currentTarget.id,
-        })
+        });
+        if (event.currentTarget.title) {
+            props.currentViewNameChange(event);
+        }
     };
 
+    // handleClose = (event) => {
+    //     event.currentTarget.id ? this.setState({
+    //         anchorEl: null,
+    //         currentViewName: event.currentTarget.id,
+    //     }) : this.setState({
+    //         anchorEl: null,
+    //     })
+    // };
+
     render() {
-        console.log("hi:" + this.state.view)
+        const { anchorEl, currentViewName } = this.state;
         return (
             <div>
                 <Button
@@ -37,21 +49,23 @@ export default class Dropdown extends Component {
                     aria-haspopup="true"
                     onClick={this.handleClick}
                     variant="outlined"
-                    color="primary"
+                    color="error"
                     size="small"
+                    endIcon={<ArrowDropDownIcon />}
+                    style={{ marginRight: "5px" }}
                 >
-                    {this.state.view}
+                    {currentViewName}
                 </Button >
                 <Menu
                     id="simple-menu"
-                    anchorEl={this.state.anchorEl}
+                    anchorEl={anchorEl}
                     keepMounted
-                    open={Boolean(this.state.anchorEl)}
+                    open={Boolean(anchorEl)}
                     onClose={this.handleClose}
                 >
-                    <MenuItem id="day" onClick={this.handleClose}>Day</MenuItem>
-                    <MenuItem id="week" onClick={this.handleClose}>Week</MenuItem>
-                    <MenuItem id="month" onClick={this.handleClose}>Month</MenuItem>
+                    <MenuItem title="Day" onClick={this.handleClose}>Day</MenuItem>
+                    <MenuItem title="Week" onClick={this.handleClose}>Week</MenuItem>
+                    <MenuItem title="Month" onClick={this.handleClose}>Month</MenuItem>
                 </Menu>
             </div >
         );

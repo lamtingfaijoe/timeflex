@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
+import { Button, Typography } from '@material-ui/core';
 import { ViewState, EditingState } from '@devexpress/dx-react-scheduler';
 import {
     Scheduler,
@@ -8,8 +7,8 @@ import {
     DayView,
     WeekView,
     MonthView,
-    Toolbar,
     DateNavigator,
+    Toolbar,
     CurrentTimeIndicator,
     Appointments,
     AppointmentTooltip,
@@ -22,10 +21,8 @@ import {
 import DayScaleCell from './DayScaleCell';
 import TimeTableCell from './TimeTableCell';
 import appointments from './data/today-appointments';
-import { Button } from '@material-ui/core';
 
 export default class Calendar extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -33,8 +30,8 @@ export default class Calendar extends Component {
             addedAppointment: {},
             appointmentChanges: {},
             editingAppointment: undefined,
+            currentViewName: this.props.currentViewName,
         };
-
         this.commitChanges = this.commitChanges.bind(this);
         this.changeAddedAppointment = this.changeAddedAppointment.bind(this);
         this.changeAppointmentChanges = this.changeAppointmentChanges.bind(this);
@@ -72,14 +69,16 @@ export default class Calendar extends Component {
     }
 
     render() {
+        console.log("Calendar state " + this.state.currentViewName);
+        console.log("Calendar props " + this.props.currentViewName);
         const {
             currentDate,
+            currentViewName,
             data,
             addedAppointment,
             appointmentChanges,
             editingAppointment,
         } = this.state;
-
         return (
             <Scheduler
                 data={data}
@@ -88,8 +87,7 @@ export default class Calendar extends Component {
             >
                 <ViewState
                     currentDate={currentDate}
-                    onCurrentDateChange={this.currentDateChange}
-                    defaultCurrentViewName="Week"
+                    currentViewName={currentViewName}
                 />
                 <EditingState
                     onCommitChanges={this.commitChanges}
@@ -100,16 +98,6 @@ export default class Calendar extends Component {
                     editingAppointment={editingAppointment}
                     onEditingAppointmentChange={this.changeEditingAppointment}
                 />
-
-
-                <ViewSwitcher />
-                <Toolbar flexibleSpaceComponent={() => {
-                    return (
-                        <Button variant="outlined">Hi</Button>
-                    );
-                }} />
-                <DateNavigator />
-                <TodayButton />
                 <DayView />
                 <WeekView
                     timeTableCellComponent={TimeTableCell}
