@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import { withStyles } from '@material-ui/core/styles';
 import { ViewState, EditingState } from '@devexpress/dx-react-scheduler';
 import {
     Scheduler,
@@ -9,6 +10,7 @@ import {
     MonthView,
     Toolbar,
     DateNavigator,
+    CurrentTimeIndicator,
     Appointments,
     AppointmentTooltip,
     AppointmentForm,
@@ -20,6 +22,7 @@ import {
 import DayScaleCell from './DayScaleCell';
 import TimeTableCell from './TimeTableCell';
 import appointments from './data/today-appointments';
+import { Button } from '@material-ui/core';
 
 export default class Calendar extends Component {
 
@@ -90,17 +93,21 @@ export default class Calendar extends Component {
                 />
                 <EditingState
                     onCommitChanges={this.commitChanges}
-
                     addedAppointment={addedAppointment}
                     onAddedAppointmentChange={this.changeAddedAppointment}
-
                     appointmentChanges={appointmentChanges}
                     onAppointmentChangesChange={this.changeAppointmentChanges}
-
                     editingAppointment={editingAppointment}
                     onEditingAppointmentChange={this.changeEditingAppointment}
                 />
-                <Toolbar />
+
+
+                <ViewSwitcher />
+                <Toolbar flexibleSpaceComponent={() => {
+                    return (
+                        <Button variant="outlined">Hi</Button>
+                    );
+                }} />
                 <DateNavigator />
                 <TodayButton />
                 <DayView />
@@ -112,7 +119,6 @@ export default class Calendar extends Component {
                 <AllDayPanel />
                 <EditRecurrenceMenu />
                 <ConfirmationDialog />
-                <ViewSwitcher />
                 <Appointments />
                 <AppointmentTooltip
                     showCloseButton
