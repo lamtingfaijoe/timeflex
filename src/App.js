@@ -1,33 +1,45 @@
 import React, { Component } from 'react';
 import { ThemeProvider } from '@material-ui/core/styles';
-import TopBar from './TopBar/TopBar';
-import Calendar from './Calendar/Calendar';
-import theme from './theme';
+import TopBar from './components/TopBar';
+import Calendar from './components/Calendar/Calendar';
+import theme from './components/theme';
 import 'fontsource-roboto';
 
 export default class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            currentDate: new Date().toISOString().slice(0, 10),
             currentViewName: "Week",
         };
-        this.currentViewNameChange = (event) => {
-            this.setState({ currentViewName: event.currentTarget.title });
-        }
+        this.currentDateChange = this.currentDateChange.bind(this);
+        this.currentViewNameChange = this.currentViewNameChange.bind(this);
     };
 
+    currentDateChange = (currentDate) => { this.setState({ currentDate }); }
+
+    currentViewNameChange = (currentViewName) => { this.setState({ currentViewName }); }
+
     render() {
-        const { currentViewName } = this.state;
-        console.log("App state: " + currentViewName);
+        const { currentDate, currentViewName } = this.state;
         return (
             <div>
                 <ThemeProvider theme={theme}>
                     <header>
-                        <TopBar currentViewName={currentViewName} currentViewNameChange={this.currentViewNameChange} />
+                        <TopBar
+                            key={currentViewName}
+                            currentViewName={currentViewName}
+                            currentViewNameChange={this.currentViewNameChange}
+                            currentDateChange={this.currentDateChange}
+                        />
                     </header>
                     <body>
-                        <div style={{ margin: "15px" }} />
-                        <Calendar currentViewName={currentViewName} />
+                        <div style={{ margin: "60px" }} />
+                        <Calendar
+                            key={currentViewName + currentDate}
+                            currentDate={currentDate}
+                            currentViewName={currentViewName}
+                        />
                     </body>
                 </ThemeProvider>
             </div>

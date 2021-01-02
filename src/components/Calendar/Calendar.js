@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Button, Typography } from '@material-ui/core';
 import { ViewState, EditingState } from '@devexpress/dx-react-scheduler';
 import {
     Scheduler,
@@ -7,20 +6,15 @@ import {
     DayView,
     WeekView,
     MonthView,
-    DateNavigator,
-    Toolbar,
-    CurrentTimeIndicator,
     Appointments,
     AppointmentTooltip,
     AppointmentForm,
-    TodayButton,
-    ViewSwitcher,
     EditRecurrenceMenu,
     ConfirmationDialog,
 } from '@devexpress/dx-react-scheduler-material-ui';
 import DayScaleCell from './DayScaleCell';
 import TimeTableCell from './TimeTableCell';
-import appointments from './data/today-appointments';
+import appointments from '../../data/today-appointments';
 
 export default class Calendar extends Component {
     constructor(props) {
@@ -30,6 +24,7 @@ export default class Calendar extends Component {
             addedAppointment: {},
             appointmentChanges: {},
             editingAppointment: undefined,
+            currentDate: this.props.currentDate,
             currentViewName: this.props.currentViewName,
         };
         this.commitChanges = this.commitChanges.bind(this);
@@ -69,8 +64,6 @@ export default class Calendar extends Component {
     }
 
     render() {
-        console.log("Calendar state " + this.state.currentViewName);
-        console.log("Calendar props " + this.props.currentViewName);
         const {
             currentDate,
             currentViewName,
@@ -82,7 +75,7 @@ export default class Calendar extends Component {
         return (
             <Scheduler
                 data={data}
-                height={670}
+                height={"auto"}
                 firstDayOfWeek={1}
             >
                 <ViewState

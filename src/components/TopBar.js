@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import MenuItem from '@material-ui/core/MenuItem';
 
-export default class Dropdown extends Component {
+class TopBar extends Component {
     constructor(props) {
         super(props);
         this.state = {
             anchorEl: null,
-            currentViewName: props.currentViewName,
+            currentViewName: this.props.currentViewName,
         };
-
         this.handleClick = this.handleClick.bind(this);
         this.handleClose = this.handleClose.bind(this);
     }
@@ -22,25 +24,24 @@ export default class Dropdown extends Component {
         });
     };
 
-    handleClose = (event, props) => {
+    handleClose = (event) => {
         this.setState({
             anchorEl: null,
         });
         if (event.currentTarget.title) {
-            props.currentViewNameChange(event);
+            this.props.currentViewNameChange(event.currentTarget.title);
         }
     };
 
-    // handleClose = (event) => {
-    //     event.currentTarget.id ? this.setState({
-    //         anchorEl: null,
-    //         currentViewName: event.currentTarget.id,
-    //     }) : this.setState({
-    //         anchorEl: null,
-    //     })
-    // };
+    handleToday = () => {
+        this.props.currentDateChange(new Date().toISOString().slice(0, 10));
+    }
 
-    render() {
+    renderNavigator = () => {
+        // return ();
+    }
+
+    renderDropdown = () => {
         const { anchorEl, currentViewName } = this.state;
         return (
             <div>
@@ -71,4 +72,30 @@ export default class Dropdown extends Component {
         );
     }
 
+    render() {
+        return (
+            <div style={{ flexGrow: 1 }}>
+                <AppBar position="fixed" color="inherit" elevation={1}>
+                    <Toolbar variant="dense">
+                        <Typography variant="h6" style={{ flexGrow: 1 }} color="primary">
+                            TimeFlex
+                        </Typography>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            style={{ marginRight: "10px" }}
+                            disableElevation size="small"
+                            onClick={this.handleToday}
+                        >
+                            Today
+                        </Button>
+                        {this.renderDropdown()}
+                        <Button size="small">Logout</Button>
+                    </Toolbar>
+                </AppBar>
+            </div >
+        );
+    }
 }
+
+export default TopBar;
