@@ -9,7 +9,8 @@ export default class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentDate: new Date().toISOString().slice(0, 10),
+            currentDate: new Date(),
+            // currentDate: new Date().toISOString().slice(0, 10),
             currentViewName: "Week",
         };
         this.currentDateChange = this.currentDateChange.bind(this);
@@ -23,27 +24,25 @@ export default class App extends Component {
     render() {
         const { currentDate, currentViewName } = this.state;
         return (
-            <div>
-                <ThemeProvider theme={theme}>
-                    <header>
-                        <TopBar
-                            key={currentViewName}
-                            currentViewName={currentViewName}
-                            currentViewNameChange={this.currentViewNameChange}
-                            currentDateChange={this.currentDateChange}
-                        />
-                    </header>
-                    <body>
-                        <div style={{ margin: "60px" }} />
-                        <Calendar
-                            key={currentViewName + currentDate}
-                            currentDate={currentDate}
-                            currentViewName={currentViewName}
-                        />
-                    </body>
-                </ThemeProvider>
-            </div>
-
-        )
+            <ThemeProvider theme={theme}>
+                <header>
+                    <TopBar
+                        key={currentViewName + currentDate}
+                        currentDate={currentDate}
+                        currentViewName={currentViewName}
+                        currentViewNameChange={this.currentViewNameChange}
+                        currentDateChange={this.currentDateChange}
+                    />
+                </header>
+                <body>
+                    <div style={{ margin: "60px" }} />
+                    <Calendar
+                        key={currentViewName + currentDate}
+                        currentDate={currentDate}
+                        currentViewName={currentViewName}
+                    />
+                </body>
+            </ThemeProvider>
+        );
     }
 }
