@@ -10,7 +10,6 @@ export default class App extends Component {
         super(props);
         this.state = {
             currentDate: new Date(),
-            // currentDate: new Date().toISOString().slice(0, 10),
             currentViewName: "Week",
         };
         this.currentDateChange = this.currentDateChange.bind(this);
@@ -35,7 +34,7 @@ export default class App extends Component {
                     />
                 </header>
                 <body>
-                    <div style={{ margin: "60px" }} />
+                    <div style={{ margin: "60px 0" }} />
                     <Calendar
                         key={currentViewName + currentDate}
                         currentDate={currentDate}

@@ -1,3 +1,4 @@
+import format from 'date-fns/format';
 import React, { Component, Fragment } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -9,7 +10,9 @@ import IconButton from '@material-ui/core/IconButton';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
-import { withStyles } from "@material-ui/core/styles";
+import TodayIcon from '@material-ui/icons/Today';
+import DateFnsUtils from '@date-io/date-fns';
+import { MuiPickersUtilsProvider, DatePicker, } from '@material-ui/pickers';
 
 
 class TopBar extends Component {
@@ -19,6 +22,7 @@ class TopBar extends Component {
             anchorEl: null,
             currentDate: this.props.currentDate,
             currentViewName: this.props.currentViewName,
+            pickerIsOpen: false,
         };
         this.handleClick = this.handleClick.bind(this);
         this.handleClose = this.handleClose.bind(this);
@@ -40,8 +44,17 @@ class TopBar extends Component {
     };
 
     handleToday = () => {
-        // this.props.currentDateChange(new Date().toISOString().slice(0, 10));
         this.props.currentDateChange(new Date());
+    }
+
+    setPicker = (bool) => {
+        this.setState({
+            pickerIsOpen: bool,
+        });
+    }
+
+    handlePickerDate = (date) => {
+        this.props.currentDateChange(date);
     }
 
     handleNavNx = () => {
@@ -72,23 +85,59 @@ class TopBar extends Component {
         this.props.currentDateChange(date);
     }
 
+    renderPicker = () => {
+        let pickerFormat = "MMMM yyyy";
+        let date = format(this.state.currentDate, 'MMMM yyyy');
+        if (this.state.currentViewName === "Day") {
+            pickerFormat = "d MMMM yyyy";
+            date = format(this.state.currentDate, 'd MMMM yyyy');
+        }
+        return (
+            <div>
+                {
+                    this.state.pickerIsOpen
+                        ? <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                            <DatePicker
+                                variant="dialog"
+                                format={pickerFormat}
+                                margin="small"
+                                value={this.state.currentDate}
+                                onChange={this.handlePickerDate}
+                                open={this.state.pickerIsOpen}
+                                onOpen={() => { this.setPicker(true) }}
+                                onClose={() => { this.setPicker(false) }}
+                                KeyboardButtonProps={{
+                                    'aria-label': 'change date',
+                                }}
+                            />
+                        </MuiPickersUtilsProvider>
+                        : <Button
+                            endIcon={<TodayIcon />}
+                            onClick={() => { this.setPicker(true) }}
+                            style={{ margin: "0 10px", color: "#616161" }}
+                        >
+                            {date}
+                        </Button>
+                }
+            </div>
+        );
+    }
+
     renderNavigator = () => {
         return (
-            <Fragment>
+            <Fragment style={{ margin: "0 5px" }}>
                 <IconButton onClick={this.handleNavPrvs}>
                     <KeyboardArrowLeftIcon />
                 </IconButton>
-                <Typography variant="p" style={{ color: "#757575" }}>
-                </Typography>
+                {this.renderPicker()}
                 <IconButton onClick={this.handleNavNx}>
                     <KeyboardArrowRightIcon />
                 </IconButton>
-            </Fragment>
+            </Fragment >
         );
     }
 
     renderDropdown = () => {
-        const { anchorEl, currentViewName } = this.state;
         return (
             <Fragment>
                 <Button
@@ -96,18 +145,17 @@ class TopBar extends Component {
                     aria-haspopup="true"
                     onClick={this.handleClick}
                     variant="outlined"
-                    color="error"
                     size="small"
                     endIcon={<ArrowDropDownIcon />}
                     style={{ margin: "0 5px" }}
                 >
-                    {currentViewName}
+                    {this.state.currentViewName}
                 </Button >
                 <Menu
                     id="simple-menu"
-                    anchorEl={anchorEl}
+                    anchorEl={this.state.anchorEl}
                     keepMounted
-                    open={Boolean(anchorEl)}
+                    open={Boolean(this.state.anchorEl)}
                     onClose={this.handleClose}
                 >
                     <MenuItem title="Day" onClick={this.handleClose}>Day</MenuItem>
@@ -121,7 +169,7 @@ class TopBar extends Component {
     render() {
         return (
             <Fragment>
-                <AppBar position="fixed" color="inherit" elevation={1}>
+                <AppBar color="inherit" elevation={0}>
                     <Toolbar variant="dense">
                         <Typography variant="h6" color="primary" style={{ flexGrow: 1 }}>
                             TimeFlex
@@ -138,7 +186,6 @@ class TopBar extends Component {
                                 Today
                             </Button>
                             {this.renderDropdown()}
-                            {/* <Button size="small">Logout</Button> */}
                         </div>
                     </Toolbar>
                 </AppBar>

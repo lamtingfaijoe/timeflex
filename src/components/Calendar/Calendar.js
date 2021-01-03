@@ -20,6 +20,7 @@ export default class Calendar extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            height: window.innerHeight - 80,
             data: appointments,
             addedAppointment: {},
             appointmentChanges: {},
@@ -31,6 +32,20 @@ export default class Calendar extends Component {
         this.changeAddedAppointment = this.changeAddedAppointment.bind(this);
         this.changeAppointmentChanges = this.changeAppointmentChanges.bind(this);
         this.changeEditingAppointment = this.changeEditingAppointment.bind(this);
+        this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+    }
+
+    componentDidMount() {
+        this.updateWindowDimensions();
+        window.addEventListener('resize', this.updateWindowDimensions);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.updateWindowDimensions);
+    }
+
+    updateWindowDimensions() {
+        this.setState({ height: window.innerHeight });
     }
 
     changeAddedAppointment(addedAppointment) {
@@ -64,37 +79,34 @@ export default class Calendar extends Component {
     }
 
     render() {
-        const {
-            currentDate,
-            currentViewName,
-            data,
-            addedAppointment,
-            appointmentChanges,
-            editingAppointment,
-        } = this.state;
         return (
             <Scheduler
-                data={data}
-                height={"auto"}
+                data={this.state.data}
+                height={window.innerHeight - 70}
                 firstDayOfWeek={1}
             >
                 <ViewState
-                    currentDate={currentDate}
-                    currentViewName={currentViewName}
+                    currentDate={this.state.currentDate}
+                    currentViewName={this.state.currentViewName}
                 />
                 <EditingState
                     onCommitChanges={this.commitChanges}
-                    addedAppointment={addedAppointment}
+                    addedAppointment={this.state.addedAppointment}
                     onAddedAppointmentChange={this.changeAddedAppointment}
-                    appointmentChanges={appointmentChanges}
+                    appointmentChanges={this.state.appointmentChanges}
                     onAppointmentChangesChange={this.changeAppointmentChanges}
-                    editingAppointment={editingAppointment}
+                    editingAppointment={this.state.editingAppointment}
                     onEditingAppointmentChange={this.changeEditingAppointment}
                 />
-                <DayView />
+                <DayView
+                    startDayHour={9}
+                    endDayHour={22}
+                />
                 <WeekView
                     timeTableCellComponent={TimeTableCell}
                     dayScaleCellComponent={DayScaleCell}
+                    startDayHour={9}
+                    endDayHour={22}
                 />
                 <MonthView />
                 <AllDayPanel />
