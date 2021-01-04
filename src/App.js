@@ -3,6 +3,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import Hidden from '@material-ui/core/Hidden';
 import Typography from '@material-ui/core/Typography';
 import { ThemeProvider } from '@material-ui/core/styles';
 import Calendar from './components/Calendar/Calendar';
@@ -41,9 +42,11 @@ export default class App extends Component {
                                 spacing="1"
                             >
                                 <Grid item>
-                                    <Typography variant="h6" style={{ color: "#616161" }}>
-                                        TimeFlex
-                                    </Typography>
+                                    <Hidden xsDown>
+                                        <Typography variant="h6" style={{ color: "#616161" }}>
+                                            TimeFlex
+                                        </Typography>
+                                    </Hidden>
                                 </Grid>
                                 <Grid item>
                                     <Grid
@@ -71,11 +74,13 @@ export default class App extends Component {
                                     </Button>
                                         </Grid>
                                         <Grid item>
-                                            <Dropdown
-                                                key={this.state.currentViewName}
-                                                currentViewName={this.state.currentViewName}
-                                                currentViewNameChange={this.currentViewNameChange}
-                                            />
+                                            <Hidden xsDown>
+                                                <Dropdown
+                                                    key={this.state.currentViewName}
+                                                    currentViewName={this.state.currentViewName}
+                                                    currentViewNameChange={this.currentViewNameChange}
+                                                />
+                                            </Hidden>
                                         </Grid>
                                     </Grid>
                                 </Grid>

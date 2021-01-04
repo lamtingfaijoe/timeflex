@@ -13,7 +13,7 @@ import {
 } from '@devexpress/dx-react-scheduler-material-ui';
 import DayScaleCell from './DayScaleCell';
 import TimeTableCell from './TimeTableCell';
-import appointments from '../../data/today-appointments';
+import { appointments } from '../../data/appointments';
 
 export default class Calendar extends Component {
     constructor(props) {
