@@ -1,7 +1,14 @@
 import React, { Component } from 'react';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 import { ThemeProvider } from '@material-ui/core/styles';
-import TopBar from './components/TopBar';
 import Calendar from './components/Calendar/Calendar';
+import Dropdown from './components/AppBar/Dropdown';
+import DateNavigator from './components/AppBar/DateNavigator';
+import CreateEventForm from './components/CreateEventForm';
 import theme from './components/theme';
 import 'fontsource-roboto';
 
@@ -21,27 +28,72 @@ export default class App extends Component {
     currentViewNameChange = (currentViewName) => { this.setState({ currentViewName }); }
 
     render() {
-        const { currentDate, currentViewName } = this.state;
         return (
             <ThemeProvider theme={theme}>
                 <header>
-                    <TopBar
-                        key={currentViewName + currentDate}
-                        currentDate={currentDate}
-                        currentViewName={currentViewName}
-                        currentViewNameChange={this.currentViewNameChange}
-                        currentDateChange={this.currentDateChange}
-                    />
+                    <AppBar color="inherit" elevation={1}>
+                        <Toolbar variant="dense">
+                            <Grid
+                                container
+                                direction="row"
+                                alignItems="center"
+                                justify="space-between"
+                                spacing="1"
+                            >
+                                <Grid item>
+                                    <Typography variant="h6" style={{ color: "#616161" }}>
+                                        TimeFlex
+                                    </Typography>
+                                </Grid>
+                                <Grid item>
+                                    <Grid
+                                        container
+                                        direction="row"
+                                        alignItems="center"
+                                        spacing="1"
+                                    >
+                                        <Grid item>
+                                            <DateNavigator
+                                                key={this.state.currentDate + this.state.currentViewName}
+                                                currentDate={this.state.currentDate}
+                                                currentViewName={this.state.currentViewName}
+                                                currentDateChange={this.currentDateChange}
+                                            />
+                                        </Grid>
+                                        <Grid item>
+                                            <Button
+                                                variant="contained"
+                                                color="primary"
+                                                size="small"
+                                                onClick={() => { this.currentDateChange(new Date()) }}
+                                            >
+                                                Today
+                                    </Button>
+                                        </Grid>
+                                        <Grid item>
+                                            <Dropdown
+                                                key={this.state.currentViewName}
+                                                currentViewName={this.state.currentViewName}
+                                                currentViewNameChange={this.currentViewNameChange}
+                                            />
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+
+                            </Grid>
+                        </Toolbar>
+                    </AppBar>
                 </header>
-                <body>
-                    <div style={{ margin: "60px 0" }} />
+                <body style={{ margin: "0px" }}>
+                    <div style={{ margin: "55px 0" }} />
+                    <CreateEventForm />
                     <Calendar
-                        key={currentViewName + currentDate}
-                        currentDate={currentDate}
-                        currentViewName={currentViewName}
+                        key={this.state.currentViewName + this.state.currentDate}
+                        currentDate={this.state.currentDate}
+                        currentViewName={this.state.currentViewName}
                     />
                 </body>
-            </ThemeProvider>
+            </ThemeProvider >
         );
     }
 }

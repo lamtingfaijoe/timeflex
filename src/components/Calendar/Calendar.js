@@ -8,7 +8,6 @@ import {
     MonthView,
     Appointments,
     AppointmentTooltip,
-    AppointmentForm,
     EditRecurrenceMenu,
     ConfirmationDialog,
 } from '@devexpress/dx-react-scheduler-material-ui';
@@ -20,7 +19,7 @@ export default class Calendar extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            height: window.innerHeight - 80,
+            height: window.innerHeight,
             data: appointments,
             addedAppointment: {},
             appointmentChanges: {},
@@ -99,14 +98,16 @@ export default class Calendar extends Component {
                     onEditingAppointmentChange={this.changeEditingAppointment}
                 />
                 <DayView
-                    startDayHour={9}
-                    endDayHour={22}
+                    startDayHour={0}
+                    endDayHour={24}
+                    cellDuration={60}
                 />
                 <WeekView
                     timeTableCellComponent={TimeTableCell}
                     dayScaleCellComponent={DayScaleCell}
-                    startDayHour={9}
-                    endDayHour={22}
+                    startDayHour={0}
+                    endDayHour={24}
+                    cellDuration={60}
                 />
                 <MonthView />
                 <AllDayPanel />
@@ -118,7 +119,7 @@ export default class Calendar extends Component {
                     showOpenButton
                     showDeleteButton
                 />
-                <AppointmentForm />
+                {/* <AppointmentForm /> */}
             </Scheduler>
         );
     }
