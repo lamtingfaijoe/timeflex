@@ -72,22 +72,34 @@ export default class CreateEventForm extends Component {
                                     />
                                 </Grid>
                                 <Grid item>
-                                    <Grid container direction="row" alignItems="center" justify="space-between">
-                                        <Grid item>
-                                            <Typography variant="body2" style={{ color: "#616161" }}>From</Typography>
-                                        </Grid>
-                                        <Grid item>
-                                            <FormPicker currentDate={new Date()} />
-                                        </Grid>
-                                    </Grid>
-                                    <Grid container direction="row" alignItems="center" justify="space-between">
-                                        <Grid item>
-                                            <Typography variant="body2" style={{ color: "#616161" }}>Until</Typography>
-                                        </Grid>
-                                        <Grid item>
-                                            <FormPicker currentDate={new Date()} />
-                                        </Grid>
-                                    </Grid>
+                                    {
+                                        this.state.allDay
+                                            ? <Grid container direction="row" alignItems="center" justify="flex-start">
+                                                <Grid item>
+                                                    <Typography variant="body2" style={{ color: "#616161" }}>All day</Typography>
+                                                </Grid>
+                                                <Grid item>
+                                                    <FormPicker currentDate={new Date()} allDay />                                                </Grid>
+                                            </Grid>
+                                            : <div>
+                                                <Grid container direction="row" alignItems="center" justify="space-between">
+                                                    <Grid item>
+                                                        <Typography variant="body2" style={{ color: "#616161" }}>From</Typography>
+                                                    </Grid>
+                                                    <Grid item>
+                                                        <FormPicker currentDate={new Date()} />
+                                                    </Grid>
+                                                </Grid>
+                                                <Grid container direction="row" alignItems="center" justify="space-between">
+                                                    <Grid item>
+                                                        <Typography variant="body2" style={{ color: "#616161" }}>Until</Typography>
+                                                    </Grid>
+                                                    <Grid item>
+                                                        <FormPicker currentDate={new Date()} />
+                                                    </Grid>
+                                                </Grid>
+                                            </div>
+                                    }
                                 </Grid>
                                 <Grid item>
                                     <FormControlLabel
