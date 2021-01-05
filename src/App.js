@@ -9,7 +9,7 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import Calendar from './components/Calendar/Calendar';
 import Dropdown from './components/AppBar/Dropdown';
 import DateNavigator from './components/AppBar/DateNavigator';
-import CreateEventForm from './components/CreateEventForm';
+import CreateEventForm from './components/CreateEventForm/CreateEventForm';
 import theme from './components/theme';
 import 'fontsource-roboto';
 

@@ -42,7 +42,7 @@ export default class Picker extends Component {
                             <DatePicker
                                 variant="dialog"
                                 format={pickerFormat}
-                                margin="small"
+                                disableToolbar={false}
                                 value={this.state.currentDate}
                                 onChange={this.props.handleSelectedDate}
                                 open={this.state.pickerIsOpen}
@@ -54,7 +54,7 @@ export default class Picker extends Component {
                         : <Button
                             endIcon={<TodayIcon />}
                             onClick={() => { this.setPicker(true) }}
-                            style={{ margin: "0 10px", color: "#616161" }}
+                            style={{ color: "#616161" }}
                         >
                             {date}
                         </Button>
