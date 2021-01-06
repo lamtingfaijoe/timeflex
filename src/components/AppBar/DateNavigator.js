@@ -1,4 +1,3 @@
-import format from 'date-fns/format';
 import React, { Component } from 'react';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
@@ -21,11 +20,7 @@ export default class DateNavigator extends Component {
         this.setState({ pickerIsOpen });
     }
 
-    handlerPickerDate = (date) => {
-        this.props.currentDateChange(date);
-    }
-
-    handleNavNx = () => {
+    handleNavNext = () => {
         let date = new Date(this.state.currentDate);
         if (this.state.currentViewName === "Day") {
             date.setDate(date.getDate() + 1);
@@ -39,7 +34,7 @@ export default class DateNavigator extends Component {
         this.props.currentDateChange(date);
     }
 
-    handleNavPrvs = () => {
+    handleNavPrev = () => {
         let date = new Date(this.state.currentDate);
         if (this.state.currentViewName === "Day") {
             date.setDate(date.getDate() - 1);
@@ -56,7 +51,7 @@ export default class DateNavigator extends Component {
     render() {
         return (
             <Grid container direction="row" alignItems="center">
-                <IconButton onClick={this.handleNavPrvs}>
+                <IconButton onClick={this.handleNavPrev}>
                     <KeyboardArrowLeftIcon />
                 </IconButton>
                 <Picker
@@ -65,7 +60,7 @@ export default class DateNavigator extends Component {
                     currentViewName={this.state.currentViewName}
                     handleSelectedDate={this.props.currentDateChange}
                 />
-                <IconButton onClick={this.handleNavNx}>
+                <IconButton onClick={this.handleNavNext}>
                     <KeyboardArrowRightIcon />
                 </IconButton>
             </Grid>

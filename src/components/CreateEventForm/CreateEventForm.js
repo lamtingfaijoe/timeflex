@@ -3,26 +3,17 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import Tooltip from '@material-ui/core/Tooltip';
 import Button from '@material-ui/core/Button';
-import Chip from '@material-ui/core/Chip';
-import Checkbox from '@material-ui/core/Checkbox';
 import Grid from '@material-ui/core/Grid';
-import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
-import Radio from '@material-ui/core/Radio';
 import TextField from '@material-ui/core/TextField';
 import Switch from '@material-ui/core/Switch';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import DescriptionIcon from '@material-ui/icons/Description';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Typography from '@material-ui/core/Typography';
 import FormPicker from './FormPicker';
-import TodayIcon from '@material-ui/icons/Today';
+import { appointments } from '../../data/appointments';
 
 const styles = {
     fab: {
@@ -33,13 +24,17 @@ const styles = {
     },
 };
 
-export default class CreateEventForm extends Component {
+class CreateEventForm extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             isOpen: true,
             allDay: false,
+            title: "",
+            startDate: new Date(),
+            endDate: new Date(),
+            description: null,
         };
     }
 
@@ -51,74 +46,136 @@ export default class CreateEventForm extends Component {
         this.setState({ isOpen: false });
     }
 
+    handleSubmit = () => {
+        let appointment = {
+            title: this.state.title,
+            startDate: this.state.startDate,
+            endDate: this.state.endDate,
+        };
+        this.handleClose();
+    }
+
     setAllDay = () => {
         this.setState({ allDay: this.state.allDay ? false : true })
     }
 
+    handleTextFieldInput = (event) => {
+        let nam = event.target.name;
+        let val = event.target.value;
+        this.setState({ [nam]: val });
+    }
+
+    handleStartDateInput = (startDate) => {
+        this.setState({ startDate });
+    }
+
+    handleEndDateInput = (endDate) => {
+        this.setState({ endDate });
+    }
+
+
+
     render() {
+        const { classes } = this.props;
+        console.log(this.state)
         return (
             <div>
-                <Dialog open={this.state.isOpen} onClose={this.handleClose} aria-labelledby="form-dialog-title">
+                <Dialog
+                    aria-labelledby="form-dialog-title"
+                    open={this.state.isOpen}
+                    onClose={this.handleClose}
+                    fullWidth maxWidth="xs"
+                >
                     <DialogTitle id="form-dialog-title">Create Event</DialogTitle>
-                    <DialogContent>
-                        <form>
-                            <Grid container direction="column" spacing={2} justify="space-evenly">
-                                <Grid item>
-                                    <TextField
-                                        autoFocus
-                                        required
-                                        id="title"
-                                        label="Title"
-                                    />
-                                </Grid>
-                                <Grid item>
-                                    {
-                                        this.state.allDay
-                                            ? <Grid container direction="row" alignItems="center" justify="flex-start">
-                                                <Grid item>
-                                                    <Typography variant="body2" style={{ color: "#616161" }}>All day</Typography>
+                    <DialogContent style={{ minHeight: "300px" }}>
+                        <Grid container direction="column" spacing={2} justify="space-evenly">
+                            <Grid item>
+                                <TextField
+                                    autoFocus
+                                    required
+                                    name="title"
+                                    label="Title"
+                                    onChange={this.handleTextFieldInput}
+                                    fullWidth
+                                />
+                            </Grid>
+                            <Grid item key={this.state.allDay}>
+                                {
+                                    this.state.allDay
+                                        ? <div>
+                                            <Grid container direction="row" alignItems="center" justify="flex-start" spacing={2}>
+                                                <Grid item style={{ minWidth: "55px" }}>
+                                                    <Typography variant="body2" style={{ color: "#616161" }}>From</Typography>
                                                 </Grid>
                                                 <Grid item>
-                                                    <FormPicker currentDate={new Date()} allDay />                                                </Grid>
+                                                    <FormPicker currentDate={new Date()} handleFormChange={this.handleStartDateInput} allDay />
+                                                </Grid>
                                             </Grid>
-                                            : <div>
-                                                <Grid container direction="row" alignItems="center" justify="space-between">
-                                                    <Grid item>
-                                                        <Typography variant="body2" style={{ color: "#616161" }}>From</Typography>
-                                                    </Grid>
-                                                    <Grid item>
-                                                        <FormPicker currentDate={new Date()} />
-                                                    </Grid>
+                                            <Grid container direction="row" alignItems="center" justify="flex-start" spacing={2}>
+                                                <Grid item style={{ minWidth: "55px" }}>
+                                                    <Typography variant="body2" style={{ color: "#616161" }}>Until</Typography>
                                                 </Grid>
-                                                <Grid container direction="row" alignItems="center" justify="space-between">
-                                                    <Grid item>
-                                                        <Typography variant="body2" style={{ color: "#616161" }}>Until</Typography>
-                                                    </Grid>
-                                                    <Grid item>
-                                                        <FormPicker currentDate={new Date()} />
-                                                    </Grid>
+                                                <Grid item>
+                                                    <FormPicker currentDate={new Date()} handleFormChange={this.handleEndDateInput} allDay />
                                                 </Grid>
-                                            </div>
-                                    }
-                                </Grid>
-                                <Grid item>
+                                            </Grid>
+                                        </div>
+                                        : <div>
+                                            <Grid container direction="row" alignItems="center" justify="flex-start" spacing={2}>
+                                                <Grid item style={{ minWidth: "55px" }}>
+                                                    <Typography variant="body2" style={{ color: "#616161" }}>From</Typography>
+                                                </Grid>
+                                                <Grid item>
+                                                    <FormPicker currentDate={new Date()} handleFormChange={this.handleStartDateInput} />
+                                                </Grid>
+                                            </Grid>
+                                            <Grid container direction="row" alignItems="center" justify="flex-start" spacing={2}>
+                                                <Grid item style={{ minWidth: "55px" }}>
+                                                    <Typography variant="body2" style={{ color: "#616161" }}>Until</Typography>
+                                                </Grid>
+                                                <Grid item>
+                                                    <FormPicker currentDate={new Date()} handleFormChange={this.handleEndDateInput} />
+                                                </Grid>
+                                            </Grid>
+                                        </div>
+                                }
+                            </Grid>
+                            <Grid container="row" justify="flex-start" style={{ margin: "10px 0" }}>
+                                <Grid item style={{ marginLeft: "10px" }}>
                                     <FormControlLabel
                                         value="start"
-                                        control={<Switch color="primary" onChange={this.setAllDay} />}
+                                        control={<Switch color="primary" size="small" onChange={this.setAllDay} />}
                                         label="All day"
                                     />
                                 </Grid>
-                                <Grid item>
-                                    <TextField id="input-with-icon-grid" label="Description" multiline rows="2" variant="outlined" defaultValue=" " />
+                                <Grid item style={{ marginLeft: "10px" }}>
+                                    <FormControlLabel
+                                        value="start"
+                                        control={<Switch color="primary" size="small" />}
+                                        label="Repeat"
+                                    />
                                 </Grid>
                             </Grid>
-                        </form>
+                            <Grid item>
+                            </Grid>
+                            <Grid item>
+                                <TextField
+                                    name="description"
+                                    label="Description"
+                                    variant="outlined"
+                                    defaultValue=" "
+                                    onChange={this.handleFormChange}
+                                    multiline rows="2"
+                                    fullWidth
+                                />
+                            </Grid>
+                        </Grid>
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={this.handleClose} color="primary">
                             Cancel
                         </Button>
-                        <Button variant="contained" onClick={this.handleClose} color="primary" disableElevation>
+                        <Button variant="contained" onClick={this.handleSubmit} color="primary" disableElevation>
                             Save
                         </Button>
                     </DialogActions>
@@ -132,3 +189,5 @@ export default class CreateEventForm extends Component {
         )
     }
 }
+
+export default CreateEventForm;

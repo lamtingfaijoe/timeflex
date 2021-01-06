@@ -7,6 +7,7 @@ import {
     WeekView,
     MonthView,
     Appointments,
+    AppointmentForm,
     AppointmentTooltip,
     EditRecurrenceMenu,
     ConfirmationDialog,
@@ -119,7 +120,7 @@ export default class Calendar extends Component {
                     showOpenButton
                     showDeleteButton
                 />
-                {/* <AppointmentForm /> */}
+                <AppointmentForm />
             </Scheduler>
         );
     }

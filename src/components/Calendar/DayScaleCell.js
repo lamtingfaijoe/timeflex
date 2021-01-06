@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 import { fade } from '@material-ui/core/styles/colorManipulator';
-import { Scheduler, WeekView } from '@devexpress/dx-react-scheduler-material-ui';
+import { WeekView } from '@devexpress/dx-react-scheduler-material-ui';
 
 const useStyles = makeStyles(theme => ({
     todayCell: {

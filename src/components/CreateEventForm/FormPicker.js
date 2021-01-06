@@ -1,8 +1,6 @@
 import format from 'date-fns/format';
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
-import TodayIcon from '@material-ui/icons/Today';
-import EventAvailableIcon from '@material-ui/icons/EventAvailable';
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, DateTimePicker, DatePicker } from '@material-ui/pickers';
 
@@ -24,6 +22,7 @@ export default class FormPicker extends Component {
 
     handleDateChange = (currentDate) => {
         this.setState({ currentDate });
+        this.props.handleFormChange(currentDate);
     }
 
     render() {
@@ -36,8 +35,8 @@ export default class FormPicker extends Component {
                             {
                                 this.state.allDay
                                     ? <DatePicker
+                                        name={this.props.name}
                                         variant="dialog"
-                                        margin="small"
                                         value={this.state.currentDate}
                                         onChange={this.handleDateChange}
                                         open={this.state.pickerIsOpen}
@@ -48,8 +47,8 @@ export default class FormPicker extends Component {
                                         showTodayButton
                                     />
                                     : <DateTimePicker
+                                        name={this.props.name}
                                         variant="dialog"
-                                        margin="small"
                                         value={this.state.currentDate}
                                         onChange={this.handleDateChange}
                                         open={this.state.pickerIsOpen}
