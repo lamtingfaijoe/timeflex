@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Grid from '@material-ui/core/Grid';
+import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
 import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
@@ -51,18 +52,22 @@ export default class DateNavigator extends Component {
     render() {
         return (
             <Grid container direction="row" alignItems="center">
-                <IconButton onClick={this.handleNavPrev}>
-                    <KeyboardArrowLeftIcon />
-                </IconButton>
+                <Hidden xsDown>
+                    <IconButton onClick={this.handleNavPrev}>
+                        <KeyboardArrowLeftIcon />
+                    </IconButton>
+                </Hidden>
                 <Picker
                     key={this.state.currentDate + this.currentViewName}
                     currentDate={this.state.currentDate}
                     currentViewName={this.state.currentViewName}
                     handleSelectedDate={this.props.currentDateChange}
                 />
-                <IconButton onClick={this.handleNavNext}>
-                    <KeyboardArrowRightIcon />
-                </IconButton>
+                <Hidden xsDown>
+                    <IconButton onClick={this.handleNavNext}>
+                        <KeyboardArrowRightIcon />
+                    </IconButton>
+                </Hidden>
             </Grid>
         )
     }

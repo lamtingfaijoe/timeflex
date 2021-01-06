@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
 import Grid from '@material-ui/core/Grid';
 import Hidden from '@material-ui/core/Hidden';
 import Typography from '@material-ui/core/Typography';
@@ -10,8 +12,11 @@ import Calendar from './components/Calendar/Calendar';
 import Dropdown from './components/AppBar/Dropdown';
 import DateNavigator from './components/AppBar/DateNavigator';
 import CreateEventForm from './components/CreateEventForm/CreateEventForm';
+import SideBar from './components/AppBar/SideBar';
 import theme from './components/theme';
 import 'fontsource-roboto';
+
+const drawerWidth = 240;
 
 export default class App extends Component {
     constructor(props) {
@@ -19,6 +24,7 @@ export default class App extends Component {
         this.state = {
             currentDate: new Date(),
             currentViewName: "Week",
+            drawerOpen: false,
         };
         this.currentDateChange = this.currentDateChange.bind(this);
         this.currentViewNameChange = this.currentViewNameChange.bind(this);
@@ -27,6 +33,14 @@ export default class App extends Component {
     currentDateChange = (currentDate) => { this.setState({ currentDate }); }
 
     currentViewNameChange = (currentViewName) => { this.setState({ currentViewName }); }
+
+    handleDrawerOpen = () => {
+        this.setState({ drawerOpen: true })
+    }
+
+    handleDrawerClose = () => {
+        this.setState({ drawerOpen: false })
+    }
 
     render() {
         return (
@@ -46,6 +60,16 @@ export default class App extends Component {
                                         <Typography variant="h6" style={{ color: "#616161" }}>
                                             TimeFlex
                                         </Typography>
+                                    </Hidden>
+                                    <Hidden smUp>
+                                        <IconButton
+                                            color="inherit"
+                                            aria-label="open drawer"
+                                            onClick={this.handleDrawerOpen}
+                                            edge="start"
+                                        >
+                                            <MenuIcon />
+                                        </IconButton>
                                     </Hidden>
                                 </Grid>
                                 <Grid item>
@@ -84,7 +108,6 @@ export default class App extends Component {
                                         </Grid>
                                     </Grid>
                                 </Grid>
-
                             </Grid>
                         </Toolbar>
                     </AppBar>
@@ -96,6 +119,10 @@ export default class App extends Component {
                         key={this.state.currentViewName + this.state.currentDate}
                         currentDate={this.state.currentDate}
                         currentViewName={this.state.currentViewName}
+                    />
+                    <SideBar
+                        drawerOpen={this.state.drawerOpen}
+                        handleDrawerClose={this.handleDrawerClose}
                     />
                 </body>
             </ThemeProvider >

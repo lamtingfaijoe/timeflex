@@ -29,7 +29,7 @@ class CreateEventForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isOpen: true,
+            isOpen: false,
             allDay: false,
             title: "",
             startDate: new Date(),
