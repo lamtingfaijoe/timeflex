@@ -16,7 +16,6 @@ import SideBar from './components/AppBar/SideBar';
 import theme from './components/theme';
 import 'fontsource-roboto';
 
-const drawerWidth = 240;
 
 export default class App extends Component {
     constructor(props) {
