@@ -122,6 +122,7 @@ export default class App extends Component {
                     <SideBar
                         drawerOpen={this.state.drawerOpen}
                         handleDrawerClose={this.handleDrawerClose}
+                        currentViewNameChange={this.currentViewNameChange}
                     />
                 </body>
             </ThemeProvider >

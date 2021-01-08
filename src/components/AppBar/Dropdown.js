@@ -29,6 +29,7 @@ export default class Dropdown extends Component {
         if (event.currentTarget.title) {
             this.props.currentViewNameChange(event.currentTarget.title);
         }
+        console.log(event.currentTarget.title)
     };
 
     render() {
